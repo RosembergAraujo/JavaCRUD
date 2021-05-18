@@ -1,0 +1,14 @@
+{
+    "java.project.referencedLibraries": {
+        "include": [
+            "lib/**/*.jar",
+            "javaDB\\lib\\mysql_Connector\\mysql-connector-java-8.0.25.jar"
+        ],
+    },
+    "java.project.sourcePaths": [
+        "javaDB/src"
+    ],
+    "cSpell.words": [
+        "Funcionarios"
+    ]
+}
