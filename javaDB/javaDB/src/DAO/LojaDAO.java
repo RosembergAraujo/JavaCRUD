@@ -6,38 +6,33 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
 
+import Classes.Loja;
 import ConnectionFactory.ConnectionFactory;
-import Loja.Loja;
 
 
 
 public class LojaDAO {
     
-    public void save(Loja loja){
-        String sql = "insert into lojas(nomeDono, emailDono, cpfDono, senha, numFuncionarios, aluguel, dataCadastro) " + 
-        " values ( " + 
-        "?," +
-        "?, " +
-        "AES_ENCRYPT(?,'"+ loja.getHash() +"')," +
-        "AES_ENCRYPT(?,'"+ loja.getHash() +"')," +
-        "?," +
-        "?," +
-        "? " +
-        ");";
+    public void addLoja(Loja loja){
+        String sql = "INSERT INTO lojas(nome, nomeDono, emailDono, cpfDono, senha, seguimentoDaLoja, numFuncionarios, aluguel, dataCadastro) " + 
+        " VALUES ( '" + 
+        loja.getNome() + "', '" +
+        loja.getNomeDono() + "', '" +
+        loja.getEmailDono() + "', " +
+        "AES_ENCRYPT('" +loja.getCpfDono() + "','"+ loja.getHash() +"'), " +
+        "AES_ENCRYPT('" + loja.getSenha() +"','"+ loja.getHash() +"'), '" +
+        loja.getSeguimentoDaLoja() + "', " +
+        loja.getNumFuncionarios() + ", " +
+        loja.getAluguel() + ", '" +
+        new Date(loja.getDataCadastro().getTime()) +"');";
 
         Connection conn = null;
         PreparedStatement pstm = null;
+
         
         try {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
-            pstm.setString(1, loja.getNomeDono());
-            pstm.setString(2, loja.getEmailDono());
-            pstm.setString(3, loja.getCpfDono());
-            pstm.setString(4, loja.getSenha());
-            pstm.setInt(5, loja.getNumFuncionarios());
-            pstm.setDouble(6, loja.getAlugel());
-            pstm.setDate(7, new Date(loja.getDataCadastro().getTime()));
             pstm.execute();
         }catch (Exception e) {
             e.printStackTrace();
@@ -74,15 +69,17 @@ public class LojaDAO {
 
             while (rset.next()) {
                 Loja loja = new Loja(
+                    rset.getString("nome"),
                     rset.getString("nomeDono"),
                     rset.getString("emailDono"),
                     rset.getString("cpfDono"),
                     rset.getString("senha"),
+                    rset.getString("seguimentoDaLoja"),
                     rset.getInt("numFuncionarios"),
-                    rset.getDouble("aluguel"),
-                    rset.getDate("dataCadastro")
+                    rset.getDouble("aluguel")
                 );
                 loja.setId(rset.getInt("id"));
+                loja.setDataCadastro(rset.getDate("dataCadastro"));
                 lojas.add(loja);               
             }
 
@@ -148,7 +145,6 @@ public class LojaDAO {
         return result;
     }
 
-
     public String getWithHash(String preHash,String hash, int id){
         String sql = "SELECT AES_DECRYPT("+ preHash+ ", '" + hash + "')FROM lojas Where id = " + id + "";
 
@@ -162,7 +158,6 @@ public class LojaDAO {
         try {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
-            // pstm.setInt(1, id);
             
             rset = pstm.executeQuery();
 
@@ -192,15 +187,17 @@ public class LojaDAO {
     }
 
     public void update(Loja loja){
-        String sql = "UPDATE lojas " + 
-        "SET nomeDono = ?, " + 
-        "emailDono = ?, " +
-        "cpfDono = AES_ENCRYPT(?,'hash'), " +
-        "senha = AES_ENCRYPT(?,'hash'), " +
-        "numFuncionarios = ?, " +
-        "aluguel = ?, " +
-        "dataCadastro =? " +
-        "WHERE id = ?;";
+		String sql = "UPDATE lojas " + 
+        "SET " +
+        "nome = '" + loja.getNome() + "', " +
+        "nomeDono = '"+ loja.getNomeDono() + "', " +
+        "emailDono = '" + loja.getEmailDono() + "', " +
+        "cpfDono = " + "AES_ENCRYPT('" +loja.getCpfDono() + "','"+ loja.getHash() +"'), " +
+        "senha = " + "AES_ENCRYPT('" + loja.getSenha() +"','"+ loja.getHash() +"'), " +
+        "seguimentoDaLoja = '" + loja.getSeguimentoDaLoja() + "', " +
+        "numFuncionarios = " + loja.getNumFuncionarios() + ", " +
+        "aluguel = " + loja.getAluguel() +
+        " WHERE id = " + loja.getId() + ";";
 
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -208,15 +205,6 @@ public class LojaDAO {
         try {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
-            pstm.setString(1, loja.getNomeDono());
-            pstm.setString(2, loja.getEmailDono());
-            pstm.setString(3, loja.getCpfDono());
-            pstm.setString(4, loja.getSenha());
-            pstm.setInt(5, loja.getNumFuncionarios());
-            pstm.setDouble(6, loja.getAlugel());
-            pstm.setDate(7, new Date(loja.getDataCadastro().getTime()));
-            pstm.setInt(8, loja.getId());
-
             pstm.execute();
         } catch (Exception e) {
             e.printStackTrace();
