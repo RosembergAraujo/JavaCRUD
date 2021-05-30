@@ -106,7 +106,6 @@ public class CadastrarLotes extends javax.swing.JFrame {
                         AllotmentDAO allotmentDAO = new AllotmentDAO();
                         allotmentDAO.createAllotment(allotment);
                         Consulta consulta = new Consulta();
-                        consulta.UP();
                         dispose();
                 } else {
                         JOptionPane.showMessageDialog(null, "Nenhum campo pode ser vazio");
