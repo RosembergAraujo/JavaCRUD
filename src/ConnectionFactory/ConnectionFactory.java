@@ -4,8 +4,8 @@ import java.sql.*;
 
 public class ConnectionFactory {
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "bahia321";
-    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/pross";
+    private static final String PASSWORD = "4321";
+    private static final String DATABASE_URL = "jdbc:mysql://localhost:3336/pross";
 
     public static Connection createConnectionToMySQL() throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -18,7 +18,7 @@ public class ConnectionFactory {
     public static void main(String[] args) throws Exception {
         Connection con = createConnectionToMySQL();
 
-        if(con != null){
+        if (con != null) {
             con.close();
         }
     }

@@ -7,17 +7,12 @@ public class Contact {
     private String email;
     private String phone_1;
     private Object phone_2 = null;
-    
-    public Contact(
-        String responsible,
-        String email,
-        String phone_1
-    ) {
+
+    public Contact(String responsible, String email, String phone_1) {
         this.responsible = responsible;
         this.email = email;
         this.phone_1 = phone_1;
     }
-
 
     public Object getContact_id() {
         return this.contact_id;

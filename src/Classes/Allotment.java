@@ -9,18 +9,12 @@ public class Allotment {
     private Object store_id = null;
     private Store store;
 
-    public Allotment(
-        String address, 
-        double rent, 
-        String area,
-        boolean available
-    ) {
+    public Allotment(String address, double rent, String area, boolean available) {
         this.address = address;
         this.rent = rent;
         this.area = area;
         this.available = available;
     }
-
 
     public String getAddress() {
         return this.address;
@@ -74,5 +68,4 @@ public class Allotment {
         this.store = store;
     }
 
-    
 }

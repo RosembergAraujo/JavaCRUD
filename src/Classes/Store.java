@@ -10,14 +10,10 @@ public class Store {
     private Contact contact;
     private Allotment allotment;
 
-    public Store( 
-        String fantasy_name, 
-        String CNPJ
-    ) {
+    public Store(String fantasy_name, String CNPJ) {
         this.fantasy_name = fantasy_name;
         this.CNPJ = CNPJ;
     }
-
 
     public int getId() {
         return this.id;
@@ -76,6 +72,5 @@ public class Store {
         this.allotment = allotment;
         this.allotment_address = allotment.getAddress();
     }
-
 
 }
