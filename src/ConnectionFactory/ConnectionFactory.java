@@ -18,7 +18,7 @@ public class ConnectionFactory {
     public static void main(String[] args) throws Exception {
         Connection con = createConnectionToMySQL();
 
-        if(con != null){
+        if (con != null) {
             con.close();
         }
     }
