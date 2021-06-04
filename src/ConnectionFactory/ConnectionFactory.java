@@ -11,7 +11,7 @@ public class ConnectionFactory {
         Class.forName("com.mysql.cj.jdbc.Driver");
 
         Connection connection = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
-
+        
         return connection;
     }
 

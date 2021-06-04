@@ -7,6 +7,7 @@ import Tools.Store.*;
 
 import Classes.*;
 import ConnectionFactory.ConnectionFactory;
+import GUI.TelaLogin;
 
 public class StoreDAO {
 
@@ -17,13 +18,13 @@ public class StoreDAO {
         String sql = "INSERT INTO store(fantasy_name, CNPJ, contact_id, allotment_address) " + "VALUES ('"
                 + store.getFantasy_name() + "', '" + store.getCNPJ() + "', " + store.getContact_id() + ", '"
                 + store.getAllotment_address() + "')";
-
+        System.out.println(sql);
         Connection conn = null;
         PreparedStatement pstm = null;
         try {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
-            pstm.execute();
+            pstm.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -42,8 +43,8 @@ public class StoreDAO {
     }
 
     public static List<Store> getStores() {
-        String sql = "SELECT * FROM store " + "INNER JOIN contact ON store.contact_id = contact.contact_id "
-                + "INNER JOIN allotment ON store.allotment_address = allotment.address";
+        String sql = "SELECT * FROM store " + " INNER JOIN contact ON store.contact_id = contact.contact_id"
+                + " INNER JOIN allotment ON store.allotment_address = allotment.address";
 
         List<Store> stores = new ArrayList<Store>();
 
@@ -51,12 +52,11 @@ public class StoreDAO {
         PreparedStatement pstm = null;
 
         ResultSet rset = null;
-
+        
         try {
             conn = ConnectionFactory.createConnectionToMySQL();
-            pstm = conn.prepareStatement(sql);
+            pstm = conn.prepareStatement(sql);       
             rset = pstm.executeQuery();
-
             while (rset.next()) {
                 Store store = new Store(rset.getString("fantasy_name"), rset.getString("CNPJ"));
                 store.setId(rset.getInt("id"));
@@ -145,6 +145,56 @@ public class StoreDAO {
 
         return null;
     }
+    public static Object getObject2(String cnpj) {
+        String sql = "SELECT * " + "FROM store " + "INNER JOIN contact ON store.contact_id = contact.contact_id "
+                + "INNER JOIN allotment ON store.allotment_address = allotment.address " + "WHERE store.CNPJ = '"+cnpj+"'";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        ResultSet rset = null;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySQL();
+            pstm = conn.prepareStatement(sql);
+            rset = pstm.executeQuery();
+
+            if (rset.next()) {
+                Store store = new Store(rset.getString("fantasy_name"), rset.getString("CNPJ"));
+                store.setId(rset.getInt("id"));
+                store.setAllotment_address(rset.getString("allotment_address"));
+                store.setContact_id(rset.getInt("contact_id"));
+                store.setAllotment(new Allotment(rset.getString("address"), rset.getDouble("rent"),
+                        rset.getString("area"), rset.getBoolean("available")));
+                Contact contact = new Contact(rset.getString("responsible"), rset.getString("email"),
+                        rset.getString("phone_1"));
+                contact.setPhone_2(rset.getObject("phone_2"));
+                contact.setContact_id(rset.getInt("contact_id"));
+                store.setContact(contact);
+                System.out.println(store.getId()+"Okkkk");
+                return store;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rset != null) {
+                    rset.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
 
     public static List<Object> getWithName(String columnName, String whereFind, String equalsTo) {
         String sql = "SELECT " + columnName + " " + "FROM store "
@@ -187,6 +237,33 @@ public class StoreDAO {
 
         return returns;
     }
+    public static void updateStore(Store store, String param) {
+        String sql = "UPDATE store SET " + "fantasy_name = '" + store.getFantasy_name() + "', " + "CNPJ = '"
+                + store.getCNPJ() + "' WHERE CNPJ = '"+ param + "'";
+        System.out.println(sql);
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySQL();
+            pstm = conn.prepareStatement(sql);
+            pstm.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstm != null) {
+                    pstm.close();
+                }
+
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public static int getLastStoreId() {
         String sql = "SELECT MAX(id) as id FROM store;";
@@ -224,5 +301,30 @@ public class StoreDAO {
         }
 
         return lastStoreId;
+    }
+    public static void deleteStore(int id) {
+        String sql = "DELETE FROM store WHERE contact_id = '" + id + "';";
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySQL();
+            pstm = conn.prepareStatement(sql);
+            pstm.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstm != null) {
+                    pstm.close();
+                }
+
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

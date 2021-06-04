@@ -14,7 +14,7 @@ public class Contact {
         this.phone_1 = phone_1;
     }
 
-    public Object getContact_id() {
+    public int getContact_id() {
         return this.contact_id;
     }
 

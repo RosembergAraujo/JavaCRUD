@@ -2,15 +2,19 @@ package GUI;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-
 import Classes.Allotment;
-import DAOs.AllotmentDAO;
 import Tools.Allotment.AllotmentTools;
+import java.awt.*;
 
 public class CadastroLotes extends javax.swing.JFrame {
+    String icon = "../Assets/icon.png";
 
-    public CadastroLotes() {
-        initComponents();
+    public CadastroLotes(boolean isTrue) {
+        if (isTrue) {
+            initComponents();
+            setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(icon)));
+        }
+
     }
 
     private void initComponents() {
@@ -23,7 +27,7 @@ public class CadastroLotes extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
-        // setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("PROSS - Cadastro de lotes");
 
         jLabel1.setText("Endereco");
 
@@ -76,8 +80,8 @@ public class CadastroLotes extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
                         .addContainerGap()));
-
         pack();
+        setLocationRelativeTo(null);
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
@@ -85,47 +89,16 @@ public class CadastroLotes extends javax.swing.JFrame {
                 && inputValor.getText().length() > 0) {
             Allotment allotment = new Allotment(inputEndereco.getText(), Double.parseDouble(inputValor.getText()),
                     inputArea.getText(), true);
-            if(AllotmentTools.getWithName("address", "address", "'"+allotment.getAddress()+"'").get(0) == null){
+            if (AllotmentTools.getWithName("address", "address", "'" + allotment.getAddress() + "'").get(0) == null) {
                 AllotmentTools.createAllotment(allotment);
                 dispose();
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Endereço do lote já ocupado");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Nenhum campo pode ser vazio");
         }
 
-    }
-
-    public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastroLotes.class.getName()).log(java.util.logging.Level.SEVERE, null,
-                    ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastroLotes.class.getName()).log(java.util.logging.Level.SEVERE, null,
-                    ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastroLotes.class.getName()).log(java.util.logging.Level.SEVERE, null,
-                    ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastroLotes.class.getName()).log(java.util.logging.Level.SEVERE, null,
-                    ex);
-        }
-        // </editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CadastroLotes().setVisible(true);
-            }
-        });
     }
 
     private javax.swing.JLabel jLabel1;

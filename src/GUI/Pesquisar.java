@@ -1,11 +1,5 @@
 package GUI;
 
-import javax.swing.JTable;
-
-import Classes.Allotment;
-import Classes.Contact;
-import Classes.Store;
-import Tools.Store.StoreTools;
 
 public class Pesquisar {
     private static Object[][] listTable;

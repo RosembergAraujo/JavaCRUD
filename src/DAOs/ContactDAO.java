@@ -101,8 +101,12 @@ public class ContactDAO {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
             rset = pstm.executeQuery();
-
-            lastContactId = (rset.next()) ? rset.getInt("contact_id") : -1;
+            Object getLastContact = (rset.next()) ? rset.getInt("contact_id") : null;
+            if(getLastContact != null){
+                lastContactId = (int) getLastContact;
+            }else{
+                lastContactId = 0;
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,6 +185,7 @@ public class ContactDAO {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
             rset = pstm.executeQuery();
+            
             while (rset.next()) {
                 returns.add(rset.getObject(columnName));
             }
@@ -226,6 +231,8 @@ public class ContactDAO {
         try {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
+            pstm.addBatch("SET FOREIGN_KEY_CHECKS=0");
+            pstm.executeBatch();
             pstm.execute();
         } catch (Exception e) {
             e.printStackTrace();
@@ -248,10 +255,13 @@ public class ContactDAO {
         String sql = "DELETE FROM contact WHERE contact_id = '" + id + "';";
         Connection conn = null;
         PreparedStatement pstm = null;
+        
 
         try {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
+            pstm.addBatch("SET FOREIGN_KEY_CHECKS=0");
+            pstm.executeBatch();
             pstm.execute();
         } catch (Exception e) {
             e.printStackTrace();

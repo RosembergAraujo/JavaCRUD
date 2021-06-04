@@ -14,7 +14,7 @@ public class AllotmentDAO {
     public static void createAllotment(Allotment allotment) {
         String sql = "INSERT INTO allotment(rent, area, address) VALUES (" + allotment.getRent() + ", " + "'"
                 + allotment.getArea() + "', " + "'" + allotment.getAddress() + "');";
-
+        System.out.println(sql);
         Connection conn = null;
         PreparedStatement pstm = null;
 
@@ -22,6 +22,8 @@ public class AllotmentDAO {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
             if (AllotmentTools.getWithName("address", "address", "'" + allotment.getAddress() + "'").get(0) == null) {
+                pstm.addBatch("SET FOREIGN_KEY_CHECKS=0");
+                pstm.executeBatch();
                 pstm.execute();
             } else {
                 System.out.println("JÁ EXISTE UM LOTE COM ESTE NOME");
@@ -99,7 +101,6 @@ public class AllotmentDAO {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
             rset = pstm.executeQuery();
-
             while (rset.next()) {
                 returns.add(rset.getObject(columnName));
             }
@@ -166,7 +167,7 @@ public class AllotmentDAO {
 
         return null;
     }
-
+    
     public static void updateAllotment(Allotment allotment) {
         String sql = "UPDATE allotment SET " + "address = '" + allotment.getAddress() + "', " + "rent = "
                 + allotment.getRent() + ", " + "area = '" + allotment.getArea() + "', " + "available = "
@@ -179,6 +180,8 @@ public class AllotmentDAO {
         try {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
+            pstm.addBatch("SET FOREIGN_KEY_CHECKS=0");
+            pstm.executeBatch();
             pstm.execute();
         } catch (Exception e) {
             e.printStackTrace();
@@ -205,6 +208,8 @@ public class AllotmentDAO {
         try {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
+            pstm.addBatch("SET FOREIGN_KEY_CHECKS=0");
+            pstm.executeBatch();
             pstm.execute();
         } catch (Exception e) {
             e.printStackTrace();
