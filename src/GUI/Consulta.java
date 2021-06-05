@@ -1,13 +1,10 @@
 package GUI;
 
-import java.util.List;
-
-import javax.swing.*;
-
 import Classes.Allotment;
 import Classes.Contact;
 import Classes.Store;
 import Tools.Store.StoreTools;
+import java.awt.*;
 
 public class Consulta extends javax.swing.JFrame {
 
@@ -16,35 +13,61 @@ public class Consulta extends javax.swing.JFrame {
     String plusIcon = "../Assets/plus.png";
     String refreshIcon = "../Assets/refresh_icon.png";
     String searchIcon = "../Assets/search.png";
-    String prossIcon = "../Assets/pross_icon.png";
+    String prossIcon = "../Assets/LOGO.png";
+    String icon = "../Assets/icon.png";
 
-    public Consulta() {
-        initComponents();
+    public Consulta(boolean isTrue) {
+        if (isTrue) {
+            initComponents();
+            setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(icon)));
+        }
+
+    }
+
+    static String[] array = { "Loja", "CNPJ", "Lote", "Email", "Telefone*", "Telefone", "aluguel", "Tamanho" };
+
+    public static void Result(String res, int re, int index) {
+        int pos = 0;
+        Object[][] resultadoLista = new Object[re][8];
+
+        for (int i = 0; i < Pesquisar.getLeng(); i++) {
+            if (Pesquisar.getTable()[i][index].equals(res)) {
+                resultadoLista[pos][0] = Pesquisar.getTable()[i][0];
+                resultadoLista[pos][1] = Pesquisar.getTable()[i][1];
+                resultadoLista[pos][2] = Pesquisar.getTable()[i][2];
+                resultadoLista[pos][3] = Pesquisar.getTable()[i][3];
+                resultadoLista[pos][4] = Pesquisar.getTable()[i][4];
+                resultadoLista[pos][5] = Pesquisar.getTable()[i][5];
+                resultadoLista[pos][6] = Pesquisar.getTable()[i][6];
+                resultadoLista[pos][7] = Pesquisar.getTable()[i][7];
+                pos++;
+            }
+        }
+        jTable1 = new javax.swing.JTable(resultadoLista, array);
+        jScrollPane1.setViewportView(jTable1);
     }
 
     public static void att() {
-        String[] array = { "Loja", "CNPJ", "Lote", "Email", "Telefone*", "Telefone", "aluguel", "Tamanho" };
-
         int len = StoreTools.getStores().size();
         Object[][] tableList = new Object[len][8];
         int i = 0;
-
+        Pesquisar.setLeng(len);
         for (Store c : StoreTools.getStores()) {
 
             Contact contact = c.getContact();
             Allotment allotment = c.getAllotment();
 
-            tableList[i][0] = c.getFantasy_name();
-            tableList[i][1] = c.getCNPJ();
-            tableList[i][2] = c.getAllotment_address();
-            tableList[i][3] = contact.getEmail();
-            tableList[i][4] = contact.getPhone_1();
+            tableList[i][0] = c.getFantasy_name().toUpperCase();
+            tableList[i][1] = c.getCNPJ().toUpperCase();
+            tableList[i][2] = c.getAllotment_address().toUpperCase();
+            tableList[i][3] = contact.getEmail().toUpperCase();
+            tableList[i][4] = contact.getPhone_1().toUpperCase();
             tableList[i][5] = contact.getPhone_2();
             tableList[i][6] = allotment.getRent();
-            tableList[i][7] = allotment.getArea();
+            tableList[i][7] = allotment.getArea().toUpperCase();
             i++;
         }
-
+        Pesquisar.setTable(tableList);
         jTable1 = new javax.swing.JTable(tableList, array);
         jScrollPane1.setViewportView(jTable1);
 
@@ -69,15 +92,38 @@ public class Consulta extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         botaoSuporte = new javax.swing.JMenu();
-
         jRadioButton1.setText("jRadioButton1");
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         att();
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("PROSS - Consulta");
+        String[] list = { "CNPJ", "Lote", "Loja" };
         botaoPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource(searchIcon)));
         botaoPesquisar.setText("Pesquisar");
+        botaoPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                int re = 0;
+                if (inputPesquisarText.getText().length() == 0) {
+                    att();
+                } else {
+                    int index = 0;
+                    if (jComboBox1.getSelectedItem().toString().equals("CNPJ")) {
+                        index = 1;
+                    } else if (jComboBox1.getSelectedItem().toString().equals("Lote")) {
+                        index = 2;
+                    } else if (jComboBox1.getSelectedItem().toString().equals("Loja")) {
+                        index = 0;
+                    }
+                    for (int j = 0; j < Pesquisar.getLeng(); j++) {
+                        if (Pesquisar.getTable()[j][index].equals(inputPesquisarText.getText().toUpperCase())) {
+                            re++;
+                        }
+                    }
+                    Result(inputPesquisarText.getText().toUpperCase(), re, index);
+                }
+            }
+        });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CNPJ" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(list));
 
         botaoCadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource(plusIcon))); // NOI18N
         botaoCadastro.setText("Cadastrar");
@@ -99,8 +145,9 @@ public class Consulta extends javax.swing.JFrame {
 
         botaoAlterarCadastro1.setIcon(new javax.swing.ImageIcon(getClass().getResource(refreshIcon))); // NOI18N
         botaoAlterarCadastro1.setText("Alterar Lotes");
-        botaoAlterarCadastro1.addActionListener(new java.awt.event.ActionListener() {
+        botaoAlterarCadastro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
+                new AltCadastro(true).setVisible(true);
             }
         });
 
@@ -112,14 +159,11 @@ public class Consulta extends javax.swing.JFrame {
             }
         });
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource(prossIcon))); // NOI18N
-        logo.setText("jLabel1");
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
-
         botaoSuporte.setText("Suporte");
         jMenuBar1.add(botaoSuporte);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -140,7 +184,7 @@ public class Consulta extends javax.swing.JFrame {
                                         .addComponent(botaoCadastroDeLote, javax.swing.GroupLayout.Alignment.TRAILING,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                                .addGroup(layout.createSequentialGroup().addGap(39, 39, 39)
+                                .addGroup(layout.createSequentialGroup().addGap(65, 65, 65)
                                         .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 105,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
@@ -194,46 +238,17 @@ public class Consulta extends javax.swing.JFrame {
                         .addComponent(botaoAtualizarTable)));
 
         pack();
+        setLocationRelativeTo(null);
     }
 
     private void botaoCadastroDeLoteActionPerformed(java.awt.event.ActionEvent evt) {
-        new CadastroLotes().setVisible(true);
+        new CadastroLotes(true).setVisible(true);
     }
 
     private void botaoCadastroActionPerformed(java.awt.event.ActionEvent evt) {
-        Cadastro cadastro = new Cadastro();
-        cadastro.setVisible(true);
+        new Cadastro(true).setVisible(true);
     }
 
-    public static void main(String args[]) {
-
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Consulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Consulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Consulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Consulta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        // </editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Consulta().setVisible(true);
-            }
-        });
-    }
-
-    // Variables declaration - do not modify
     private javax.swing.JButton botaoAlterarCadastro;
     private javax.swing.JButton botaoAlterarCadastro1;
     private javax.swing.JButton botaoAtualizarTable;
@@ -251,5 +266,7 @@ public class Consulta extends javax.swing.JFrame {
     private static javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JLabel logo;
+    public class setVisible {
+    }
 
 }

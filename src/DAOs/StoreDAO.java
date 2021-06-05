@@ -7,23 +7,22 @@ import Tools.Store.*;
 
 import Classes.*;
 import ConnectionFactory.ConnectionFactory;
+import GUI.TelaLogin;
 
 public class StoreDAO {
 
     public static void createStore(Store store) {
-        Allotment allotment = store.getAllotment();
-        Contact contact = store.getContact();
 
         String sql = "INSERT INTO store(fantasy_name, CNPJ, contact_id, allotment_address) " + "VALUES ('"
                 + store.getFantasy_name() + "', '" + store.getCNPJ() + "', " + store.getContact_id() + ", '"
                 + store.getAllotment_address() + "')";
-
         Connection conn = null;
         PreparedStatement pstm = null;
         try {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
             pstm.execute();
+            // System.out.println("\n===========\n"+sql+"\n===========\n");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -42,8 +41,8 @@ public class StoreDAO {
     }
 
     public static List<Store> getStores() {
-        String sql = "SELECT * FROM store " + "INNER JOIN contact ON store.contact_id = contact.contact_id "
-                + "INNER JOIN allotment ON store.allotment_address = allotment.address";
+        String sql = "SELECT * FROM store " + " INNER JOIN contact ON store.contact_id = contact.contact_id"
+                + " INNER JOIN allotment ON store.allotment_address = allotment.address";
 
         List<Store> stores = new ArrayList<Store>();
 
@@ -51,12 +50,11 @@ public class StoreDAO {
         PreparedStatement pstm = null;
 
         ResultSet rset = null;
-
+        
         try {
             conn = ConnectionFactory.createConnectionToMySQL();
-            pstm = conn.prepareStatement(sql);
+            pstm = conn.prepareStatement(sql);       
             rset = pstm.executeQuery();
-
             while (rset.next()) {
                 Store store = new Store(rset.getString("fantasy_name"), rset.getString("CNPJ"));
                 store.setId(rset.getInt("id"));
@@ -187,6 +185,32 @@ public class StoreDAO {
 
         return returns;
     }
+    public static void updateStore(Store store, int param) {
+        String sql = "UPDATE store SET " + "fantasy_name = '" + store.getFantasy_name() + "', " + "CNPJ = '"
+                + store.getCNPJ() + "' WHERE id = '"+ param + "'";
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySQL();
+            pstm = conn.prepareStatement(sql);
+            pstm.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstm != null) {
+                    pstm.close();
+                }
+
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public static int getLastStoreId() {
         String sql = "SELECT MAX(id) as id FROM store;";
@@ -224,5 +248,30 @@ public class StoreDAO {
         }
 
         return lastStoreId;
+    }
+    public static void deleteStore(int id) {
+        String sql = "DELETE FROM store WHERE contact_id = '" + id + "';";
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySQL();
+            pstm = conn.prepareStatement(sql);
+            pstm.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstm != null) {
+                    pstm.close();
+                }
+
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

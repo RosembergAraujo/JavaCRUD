@@ -7,21 +7,32 @@ import javax.swing.*;
 import Classes.Allotment;
 import Classes.Contact;
 import Classes.Store;
-import DAOs.AllotmentDAO;
 import Tools.Allotment.AllotmentTools;
 import Tools.Contact.ContactTools;
+import java.awt.*;
 import Tools.Store.StoreTools;
 
 public class Cadastro extends javax.swing.JFrame {
+    String icon = "../Assets/icon.png";
+    List<Object> addressList = AllotmentTools.getWithName("address", "available", "true");
+    String[] address = new String[addressList.size()];
 
-    public Cadastro() {
-        initComponents();
+    public Cadastro(boolean isTrue) {
+        if (isTrue) {
+            initComponents();
+            setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(icon)));
+        }
+
     }
 
     private void habilitarInput(boolean IsTrue) {
         inputCNPJ.setEnabled(IsTrue);
         inputNomeLoja.setEnabled(IsTrue);
         lotesComboBox.setEnabled(IsTrue);
+        if (addressList.get(0) == null) {
+            lotesComboBox.setEnabled(false);
+        }
+
     }
 
     private void initComponents() {
@@ -42,8 +53,7 @@ public class Cadastro extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         botaoAdicionar = new javax.swing.JButton();
-
-        // setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("PROSS - Cadastro");
 
         jLabel1.setText("Responsavel*");
 
@@ -56,15 +66,16 @@ public class Cadastro extends javax.swing.JFrame {
         cadastroLojaRadio.setText("Adicionar Loja");
 
         habilitarInput(false);
-        List<Object> addressList = AllotmentTools.getWithName("address", "available", "true");
-        String[] address = new String[addressList.size()];
+
         int i = 0;
-        for (Object c : addressList) {
-            address[i] = c.toString();
-            i++;
+        if (addressList.get(0) != null) {
+            for (Object c : addressList) {
+                address[i] = c.toString().toUpperCase();
+                i++;
+            }
+            lotesComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(address));
         }
 
-        lotesComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(address));
         lotesComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lotesComboBoxActionPerformed(evt);
@@ -193,7 +204,8 @@ public class Cadastro extends javax.swing.JFrame {
                 .addContainerGap()));
 
         pack();
-    }// </editor-fold>
+        setLocationRelativeTo(null);
+    }
 
     private void lotesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
 
@@ -201,59 +213,36 @@ public class Cadastro extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         Contact contact = new Contact(inputNome.getText(), inputEmail.getText(), inputTelefone1.getText());
-        contact.setContact_id(ContactTools.getLastContactId() + 1);
-        contact.setPhone_2(inputTelefone2.getText());
+
+        if (inputTelefone2.getText().length() != 0) {
+            contact.setPhone_2(inputTelefone2.getText());
+        }
 
         ContactTools.createContact(contact);
 
+        contact.setContact_id(ContactTools.getLastContactId());
+
         if (cadastroLojaRadio.isSelected()) {
             Store store = new Store(inputNomeLoja.getText(), inputCNPJ.getText());
-
-            store.setId(StoreTools.getLastStoreId() + 1);
 
             String allotmentAddress = lotesComboBox.getSelectedItem().toString();
             Allotment allotment = AllotmentTools.getObject(allotmentAddress);
 
             store.setAllotment(allotment);
-            allotment.setStore_id(store.getId());
-            allotment.setAvailable(false);
-
+            store.setContact_id(contact.getContact_id());
             store.setContact(contact);
 
             StoreTools.createStore(store);
 
+            store.setId(StoreTools.getLastStoreId());
+
+            allotment.setStore_id(store.getId());
+            allotment.setAvailable(false);
+
             AllotmentTools.updateAllotment(allotment);
-            Consulta.att();
         }
         dispose();
         Consulta.att();
-    }
-
-    public static void main(String args[]) {
-
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Cadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Cadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Cadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Cadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Cadastro cadastro = new Cadastro();
-                cadastro.setTitle("PROSS");
-                cadastro.setVisible(true);
-            }
-        });
     }
 
     private javax.swing.JButton botaoAdicionar;
