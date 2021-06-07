@@ -12,19 +12,17 @@ import GUI.TelaLogin;
 public class StoreDAO {
 
     public static void createStore(Store store) {
-        Allotment allotment = store.getAllotment();
-        Contact contact = store.getContact();
 
-        String sql = "INSERT INTO store(fantasy_name, CNPJ, contact_id, allotment_address) " + "VALUES ('"
+        String sql = "INSERT INTO store(fantasy_name, CNPJ, contact_id, allotment_address, note, model, social_reason, activity, salesOrServiceProvision) " + "VALUES ('"
                 + store.getFantasy_name() + "', '" + store.getCNPJ() + "', " + store.getContact_id() + ", '"
-                + store.getAllotment_address() + "')";
-        System.out.println(sql);
+                + store.getAllotment_address() + "', '"+store.getObsText()+"', '"+store.getModel()+"', '"+store.getSocial_reason()+"','"+store.getActivity()+"','"+store.getSalesOrServiceProvision()+"')";
         Connection conn = null;
         PreparedStatement pstm = null;
         try {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
-            pstm.executeUpdate();
+            pstm.execute();
+            // System.out.println("\n===========\n"+sql+"\n===========\n");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -58,7 +56,8 @@ public class StoreDAO {
             pstm = conn.prepareStatement(sql);       
             rset = pstm.executeQuery();
             while (rset.next()) {
-                Store store = new Store(rset.getString("fantasy_name"), rset.getString("CNPJ"));
+                Store store = new Store(rset.getString("fantasy_name"), rset.getString("CNPJ"), rset.getString("social_reason"),
+                rset.getString("activity"),rset.getString("model"), rset.getString("note"), rset.getString("salesOrServiceProvision"));
                 store.setId(rset.getInt("id"));
                 store.setAllotment_address(rset.getString("allotment_address"));
                 store.setContact_id(rset.getInt("contact_id"));
@@ -110,7 +109,8 @@ public class StoreDAO {
             rset = pstm.executeQuery();
 
             if (rset.next()) {
-                Store store = new Store(rset.getString("fantasy_name"), rset.getString("CNPJ"));
+                Store store = new Store(rset.getString("fantasy_name"), rset.getString("CNPJ"), rset.getString("social_reason"),
+                rset.getString("activity"),rset.getString("model"), rset.getString("note"), rset.getString("salesOrServiceProvision"));
                 store.setId(rset.getInt("id"));
                 store.setAllotment_address(rset.getString("allotment_address"));
                 store.setContact_id(rset.getInt("contact_id"));
@@ -122,56 +122,6 @@ public class StoreDAO {
                 contact.setContact_id(rset.getInt("contact_id"));
                 store.setContact(contact);
 
-                return store;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rset != null) {
-                    rset.close();
-                }
-                if (pstm != null) {
-                    pstm.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        return null;
-    }
-    public static Object getObject2(String cnpj) {
-        String sql = "SELECT * " + "FROM store " + "INNER JOIN contact ON store.contact_id = contact.contact_id "
-                + "INNER JOIN allotment ON store.allotment_address = allotment.address " + "WHERE store.CNPJ = '"+cnpj+"'";
-
-        Connection conn = null;
-        PreparedStatement pstm = null;
-
-        ResultSet rset = null;
-
-        try {
-            conn = ConnectionFactory.createConnectionToMySQL();
-            pstm = conn.prepareStatement(sql);
-            rset = pstm.executeQuery();
-
-            if (rset.next()) {
-                Store store = new Store(rset.getString("fantasy_name"), rset.getString("CNPJ"));
-                store.setId(rset.getInt("id"));
-                store.setAllotment_address(rset.getString("allotment_address"));
-                store.setContact_id(rset.getInt("contact_id"));
-                store.setAllotment(new Allotment(rset.getString("address"), rset.getDouble("rent"),
-                        rset.getString("area"), rset.getBoolean("available")));
-                Contact contact = new Contact(rset.getString("responsible"), rset.getString("email"),
-                        rset.getString("phone_1"));
-                contact.setPhone_2(rset.getObject("phone_2"));
-                contact.setContact_id(rset.getInt("contact_id"));
-                store.setContact(contact);
-                System.out.println(store.getId()+"Okkkk");
                 return store;
             }
 
@@ -200,8 +150,8 @@ public class StoreDAO {
         String sql = "SELECT " + columnName + " " + "FROM store "
                 + "INNER JOIN contact ON store.contact_id = contact.contact_id "
                 + "INNER JOIN allotment ON store.allotment_address = allotment.address " + "WHERE store." + whereFind
-                + " = " + equalsTo;
-
+                + " = '"+equalsTo+"'";
+                
         List<Object> returns = new ArrayList<Object>();
 
         Connection conn = null;
@@ -237,10 +187,9 @@ public class StoreDAO {
 
         return returns;
     }
-    public static void updateStore(Store store, String param) {
+    public static void updateStore(Store store, int param) {
         String sql = "UPDATE store SET " + "fantasy_name = '" + store.getFantasy_name() + "', " + "CNPJ = '"
-                + store.getCNPJ() + "' WHERE CNPJ = '"+ param + "'";
-        System.out.println(sql);
+                + store.getCNPJ() + "', social_reason = '"+store.getSocial_reason()+"', note='"+store.getObsText()+"', salesOrServiceProvision= '"+store.getSalesOrServiceProvision()+"', activity='"+store.getActivity()+"', model='"+store.getModel()+"' '"+"' WHERE id = '"+ param + "'";
         Connection conn = null;
         PreparedStatement pstm = null;
 

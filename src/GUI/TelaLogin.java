@@ -27,8 +27,7 @@ public class TelaLogin extends javax.swing.JFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 String pass = String.copyValueOf(inputPassword.getPassword());
                 String user = jTextField1.getText();
-                boolean userAlreadyexists = LoginDAO.getUser(user, pass);
-                if (userAlreadyexists) {
+                if (LoginDAO.getUser(user, pass)) {
                     Consulta consulta = new Consulta(true);
                     consulta.setVisible(true);
                     dispose();

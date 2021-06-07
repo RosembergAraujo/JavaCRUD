@@ -26,6 +26,7 @@ public class ContactDAO {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
             pstm.execute();
+            // System.out.println("\n===========\n"+sql+"\n===========\n");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

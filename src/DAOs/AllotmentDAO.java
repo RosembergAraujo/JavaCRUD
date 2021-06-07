@@ -14,7 +14,6 @@ public class AllotmentDAO {
     public static void createAllotment(Allotment allotment) {
         String sql = "INSERT INTO allotment(rent, area, address) VALUES (" + allotment.getRent() + ", " + "'"
                 + allotment.getArea() + "', " + "'" + allotment.getAddress() + "');";
-        System.out.println(sql);
         Connection conn = null;
         PreparedStatement pstm = null;
 
@@ -180,9 +179,8 @@ public class AllotmentDAO {
         try {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
-            pstm.addBatch("SET FOREIGN_KEY_CHECKS=0");
-            pstm.executeBatch();
             pstm.execute();
+            // System.out.println("\n===========\n"+sql+"\n===========\n");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
