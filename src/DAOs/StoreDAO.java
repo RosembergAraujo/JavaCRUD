@@ -111,6 +111,7 @@ public class StoreDAO {
             if (rset.next()) {
                 Store store = new Store(rset.getString("fantasy_name"), rset.getString("CNPJ"), rset.getString("social_reason"),
                 rset.getString("activity"),rset.getString("model"), rset.getString("note"), rset.getString("salesOrServiceProvision"));
+
                 store.setId(rset.getInt("id"));
                 store.setAllotment_address(rset.getString("allotment_address"));
                 store.setContact_id(rset.getInt("contact_id"));
@@ -189,7 +190,7 @@ public class StoreDAO {
     }
     public static void updateStore(Store store, int param) {
         String sql = "UPDATE store SET " + "fantasy_name = '" + store.getFantasy_name() + "', " + "CNPJ = '"
-                + store.getCNPJ() + "', social_reason = '"+store.getSocial_reason()+"', note='"+store.getObsText()+"', salesOrServiceProvision= '"+store.getSalesOrServiceProvision()+"', activity='"+store.getActivity()+"', model='"+store.getModel()+"' '"+"' WHERE id = '"+ param + "'";
+        + store.getCNPJ() + "', social_reason = '"+store.getSocial_reason()+"', note='"+store.getObsText()+"', salesOrServiceProvision= '"+store.getSalesOrServiceProvision()+"', activity='"+store.getActivity()+"', model='"+store.getModel()+"' '"+"' WHERE id = '"+ param + "'";
         Connection conn = null;
         PreparedStatement pstm = null;
 

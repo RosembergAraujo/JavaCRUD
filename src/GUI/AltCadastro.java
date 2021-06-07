@@ -1,7 +1,6 @@
 package GUI;
 
 import java.util.List;
-
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
@@ -588,7 +587,3 @@ public class AltCadastro extends javax.swing.JFrame {
         private java.awt.PopupMenu popupMenu3;
         // End of variables declaration                   
     }
-
-
-    
-    

@@ -46,6 +46,7 @@ public class Consulta extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
     }
 
+
     public static void att() {
         int len = StoreTools.getStores().size();
         Object[][] tableList = new Object[len][8];
@@ -71,6 +72,7 @@ public class Consulta extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
     } 
+
     private void initComponents() {
 
         jRadioButton1 = new javax.swing.JRadioButton();
@@ -89,6 +91,7 @@ public class Consulta extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         botaoSuporte = new javax.swing.JMenu();
+
         att();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PROSS - Consulta");
@@ -118,8 +121,8 @@ public class Consulta extends javax.swing.JFrame {
                 }
             }
         });
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(list));
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(list));
         botaoCadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource(plusIcon))); // NOI18N
         botaoCadastro.setText("Cadastrar");
         botaoCadastro.addActionListener(new java.awt.event.ActionListener() {
@@ -127,7 +130,6 @@ public class Consulta extends javax.swing.JFrame {
                 botaoCadastroActionPerformed(evt);
             }
         });
-
         botaoCadastroDeLote.setIcon(new javax.swing.ImageIcon(getClass().getResource(allotmentIcon))); // NOI18N
         botaoCadastroDeLote.setText("Cadastrar Lote");
         botaoCadastroDeLote.addActionListener(new java.awt.event.ActionListener() {
@@ -135,8 +137,8 @@ public class Consulta extends javax.swing.JFrame {
                 botaoCadastroDeLoteActionPerformed(evt);
             }
         });
-
         botaoAlterarCadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource(refreshIcon)));
+
         botaoAlterarCadastro.setText("Alterar Cadastro");
 
         botaoAlterarCadastro1.setIcon(new javax.swing.ImageIcon(getClass().getResource(refreshIcon))); // NOI18N
@@ -178,38 +180,69 @@ public class Consulta extends javax.swing.JFrame {
         });
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
-
         botaoSuporte.setText("Suporte");
         jMenuBar1.add(botaoSuporte);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
+                .createSequentialGroup().addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
+                        .createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
+                                .createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(botaoCadastro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(botaoAlterarCadastro, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
-                                    .addComponent(botaoAlterarCadastro1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
-                                    .addComponent(botaoCadastroDeLote, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
+                                        .addComponent(botaoCadastro, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(botaoAlterarCadastro, javax.swing.GroupLayout.DEFAULT_SIZE, 191,
+                                                Short.MAX_VALUE)
+                                        .addComponent(botaoAlterarCadastro1, javax.swing.GroupLayout.DEFAULT_SIZE, 191,
+                                                Short.MAX_VALUE)
+                                        .addComponent(botaoCadastroDeLote, javax.swing.GroupLayout.Alignment.TRAILING,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(66, 66, 66)
                                 .addComponent(logo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 657, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE, 657,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(inputPesquisarText, javax.swing.GroupLayout.PREFERRED_SIZE, 477,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(botaoPesquisar))))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE).addComponent(botaoAtualizarTable)))
+                .addContainerGap()));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+                javax.swing.GroupLayout.Alignment.TRAILING,
+                layout.createSequentialGroup().addContainerGap().addGroup(layout
+                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE).addGroup(layout
+                                .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(inputPesquisarText, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(botaoPesquisar).addComponent(jComboBox1,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18).addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        652, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 84,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(inputPesquisarText, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(botaoCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, 76,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(botaoCadastroDeLote, javax.swing.GroupLayout.PREFERRED_SIZE, 76,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(botaoPesquisar))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -252,7 +285,6 @@ public class Consulta extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }                        
-
     private void botaoCadastroDeLoteActionPerformed(java.awt.event.ActionEvent evt) {
         new CadastroLotes(true).setVisible(true);
     }
@@ -277,4 +309,5 @@ public class Consulta extends javax.swing.JFrame {
     private static javax.swing.JScrollPane jScrollPane1;
     private static javax.swing.JTable jTable1;
     private javax.swing.JLabel logo;                  
+
 }

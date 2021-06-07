@@ -91,7 +91,6 @@ public class Cadastro extends javax.swing.JFrame {
             jLabel7.setText("CNPJ*");
             
             habilitarInput(false);
-
             int i = 0;
             if (addressList.get(0) != null) {
                 for (Object c : addressList) {
