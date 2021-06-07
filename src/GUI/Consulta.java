@@ -5,9 +5,8 @@ import Classes.Contact;
 import Classes.Store;
 import Tools.Store.StoreTools;
 import java.awt.*;
-
+import java.util.List;
 public class Consulta extends javax.swing.JFrame {
-
     String allotmentIcon = "../Assets/allotment_icon.png";
     String atualizeIcon = "../Assets/atualize.png";
     String plusIcon = "../Assets/plus.png";
@@ -15,7 +14,8 @@ public class Consulta extends javax.swing.JFrame {
     String searchIcon = "../Assets/search.png";
     String prossIcon = "../Assets/LOGO.png";
     String icon = "../Assets/icon.png";
-
+    String detalhesIcon ="../Assets/detalhes.png";
+    String value;
     public Consulta(boolean isTrue) {
         if (isTrue) {
             initComponents();
@@ -23,7 +23,6 @@ public class Consulta extends javax.swing.JFrame {
         }
 
     }
-
     static String[] array = { "Loja", "CNPJ", "Lote", "Email", "Telefone*", "Telefone", "aluguel", "Tamanho" };
 
     public static void Result(String res, int re, int index) {
@@ -71,13 +70,10 @@ public class Consulta extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable(tableList, array);
         jScrollPane1.setViewportView(jTable1);
 
-    }
-
+    } 
     private void initComponents() {
 
         jRadioButton1 = new javax.swing.JRadioButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         inputPesquisarText = new javax.swing.JTextField();
@@ -89,10 +85,10 @@ public class Consulta extends javax.swing.JFrame {
         botaoAlterarCadastro1 = new javax.swing.JButton();
         botaoAtualizarTable = new javax.swing.JButton();
         logo = new javax.swing.JLabel();
+        botaoDetalhes = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         botaoSuporte = new javax.swing.JMenu();
-        jRadioButton1.setText("jRadioButton1");
         att();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PROSS - Consulta");
@@ -122,7 +118,6 @@ public class Consulta extends javax.swing.JFrame {
                 }
             }
         });
-
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(list));
 
         botaoCadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource(plusIcon))); // NOI18N
@@ -132,6 +127,7 @@ public class Consulta extends javax.swing.JFrame {
                 botaoCadastroActionPerformed(evt);
             }
         });
+
         botaoCadastroDeLote.setIcon(new javax.swing.ImageIcon(getClass().getResource(allotmentIcon))); // NOI18N
         botaoCadastroDeLote.setText("Cadastrar Lote");
         botaoCadastroDeLote.addActionListener(new java.awt.event.ActionListener() {
@@ -140,7 +136,7 @@ public class Consulta extends javax.swing.JFrame {
             }
         });
 
-        botaoAlterarCadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource(refreshIcon))); // NOI18N
+        botaoAlterarCadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource(refreshIcon)));
         botaoAlterarCadastro.setText("Alterar Cadastro");
 
         botaoAlterarCadastro1.setIcon(new javax.swing.ImageIcon(getClass().getResource(refreshIcon))); // NOI18N
@@ -158,88 +154,104 @@ public class Consulta extends javax.swing.JFrame {
                 att();
             }
         });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row  = jTable1.getSelectedRow();
+                botaoDetalhes.setEnabled(true);
+                
+                
+                value = String.valueOf(jTable1.getModel().getValueAt(row, 0));
+                
+                
+            }
+        });
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource(prossIcon))); // NOI18N
-
+        botaoDetalhes.setEnabled(false);
+        botaoDetalhes.setIcon(new javax.swing.ImageIcon(getClass().getResource(detalhesIcon))); // NOI18N
+        botaoDetalhes.setText("Detalhes");
+        botaoDetalhes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                List<Object> list = StoreTools.getWithName("id", "fantasy_name", value);
+                new Visualizar((int)list.get(0), true).setVisible(true);
+            }
+        });
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
+
         botaoSuporte.setText("Suporte");
         jMenuBar1.add(botaoSuporte);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
-                .createSequentialGroup().addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
-                        .createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
-                                .createSequentialGroup()
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(botaoCadastro, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(botaoAlterarCadastro, javax.swing.GroupLayout.DEFAULT_SIZE, 191,
-                                                Short.MAX_VALUE)
-                                        .addComponent(botaoAlterarCadastro1, javax.swing.GroupLayout.DEFAULT_SIZE, 191,
-                                                Short.MAX_VALUE)
-                                        .addComponent(botaoCadastroDeLote, javax.swing.GroupLayout.Alignment.TRAILING,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
+                                    .addComponent(botaoCadastro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(botaoAlterarCadastro, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                                    .addComponent(botaoAlterarCadastro1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                                    .addComponent(botaoCadastroDeLote, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                                .addGroup(layout.createSequentialGroup().addGap(65, 65, 65)
-                                        .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 105,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(66, 66, 66)
+                                .addComponent(logo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE, 657,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(inputPesquisarText, javax.swing.GroupLayout.PREFERRED_SIZE, 477,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(botaoPesquisar))))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE).addComponent(botaoAtualizarTable)))
-                .addContainerGap()));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-                javax.swing.GroupLayout.Alignment.TRAILING,
-                layout.createSequentialGroup().addContainerGap().addGroup(layout
-                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE).addGroup(layout
-                                .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(inputPesquisarText, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(botaoPesquisar).addComponent(jComboBox1,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18).addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        652, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 84,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 657, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(botaoCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, 76,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(inputPesquisarText, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(botaoCadastroDeLote, javax.swing.GroupLayout.PREFERRED_SIZE, 76,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(botaoAlterarCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, 76,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(botaoAlterarCadastro1, javax.swing.GroupLayout.PREFERRED_SIZE, 76,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(botaoAtualizarTable)));
+                                .addComponent(botaoPesquisar))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(botaoDetalhes, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botaoAtualizarTable)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(inputPesquisarText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(botaoPesquisar)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 652, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botaoCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botaoCadastroDeLote, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botaoAlterarCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botaoAlterarCadastro1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botaoAtualizarTable)
+                    .addComponent(botaoDetalhes, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
 
         pack();
         setLocationRelativeTo(null);
-    }
+    }                        
 
     private void botaoCadastroDeLoteActionPerformed(java.awt.event.ActionEvent evt) {
         new CadastroLotes(true).setVisible(true);
@@ -252,6 +264,7 @@ public class Consulta extends javax.swing.JFrame {
     private javax.swing.JButton botaoAlterarCadastro;
     private javax.swing.JButton botaoAlterarCadastro1;
     private javax.swing.JButton botaoAtualizarTable;
+    private javax.swing.JButton botaoDetalhes;
     private javax.swing.JButton botaoCadastro;
     private javax.swing.JButton botaoCadastroDeLote;
     private javax.swing.JButton botaoPesquisar;
@@ -262,11 +275,6 @@ public class Consulta extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JRadioButton jRadioButton1;
     private static javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private static javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JLabel logo;
-    public class setVisible {
-    }
-
+    private javax.swing.JLabel logo;                  
 }

@@ -13,9 +13,9 @@ public class StoreDAO {
 
     public static void createStore(Store store) {
 
-        String sql = "INSERT INTO store(fantasy_name, CNPJ, contact_id, allotment_address) " + "VALUES ('"
+        String sql = "INSERT INTO store(fantasy_name, CNPJ, contact_id, allotment_address, note, model, social_reason, activity, salesOrServiceProvision) " + "VALUES ('"
                 + store.getFantasy_name() + "', '" + store.getCNPJ() + "', " + store.getContact_id() + ", '"
-                + store.getAllotment_address() + "')";
+                + store.getAllotment_address() + "', '"+store.getObsText()+"', '"+store.getModel()+"', '"+store.getSocial_reason()+"','"+store.getActivity()+"','"+store.getSalesOrServiceProvision()+"')";
         Connection conn = null;
         PreparedStatement pstm = null;
         try {
@@ -56,7 +56,8 @@ public class StoreDAO {
             pstm = conn.prepareStatement(sql);       
             rset = pstm.executeQuery();
             while (rset.next()) {
-                Store store = new Store(rset.getString("fantasy_name"), rset.getString("CNPJ"));
+                Store store = new Store(rset.getString("fantasy_name"), rset.getString("CNPJ"), rset.getString("social_reason"),
+                rset.getString("activity"),rset.getString("model"), rset.getString("note"), rset.getString("salesOrServiceProvision"));
                 store.setId(rset.getInt("id"));
                 store.setAllotment_address(rset.getString("allotment_address"));
                 store.setContact_id(rset.getInt("contact_id"));
@@ -108,7 +109,8 @@ public class StoreDAO {
             rset = pstm.executeQuery();
 
             if (rset.next()) {
-                Store store = new Store(rset.getString("fantasy_name"), rset.getString("CNPJ"));
+                Store store = new Store(rset.getString("fantasy_name"), rset.getString("CNPJ"), rset.getString("social_reason"),
+                rset.getString("activity"),rset.getString("model"), rset.getString("note"), rset.getString("salesOrServiceProvision"));
                 store.setId(rset.getInt("id"));
                 store.setAllotment_address(rset.getString("allotment_address"));
                 store.setContact_id(rset.getInt("contact_id"));
@@ -148,8 +150,8 @@ public class StoreDAO {
         String sql = "SELECT " + columnName + " " + "FROM store "
                 + "INNER JOIN contact ON store.contact_id = contact.contact_id "
                 + "INNER JOIN allotment ON store.allotment_address = allotment.address " + "WHERE store." + whereFind
-                + " = " + equalsTo;
-
+                + " = '"+equalsTo+"'";
+                
         List<Object> returns = new ArrayList<Object>();
 
         Connection conn = null;
@@ -187,7 +189,7 @@ public class StoreDAO {
     }
     public static void updateStore(Store store, int param) {
         String sql = "UPDATE store SET " + "fantasy_name = '" + store.getFantasy_name() + "', " + "CNPJ = '"
-                + store.getCNPJ() + "' WHERE id = '"+ param + "'";
+                + store.getCNPJ() + "', social_reason = '"+store.getSocial_reason()+"', note='"+store.getObsText()+"', salesOrServiceProvision= '"+store.getSalesOrServiceProvision()+"', activity='"+store.getActivity()+"', model='"+store.getModel()+"' '"+"' WHERE id = '"+ param + "'";
         Connection conn = null;
         PreparedStatement pstm = null;
 
