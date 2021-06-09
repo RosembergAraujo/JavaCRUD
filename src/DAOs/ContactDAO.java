@@ -253,7 +253,7 @@ public class ContactDAO {
     }
 
     public static void deleteContact(int id) {
-        String sql = "DELETE FROM contact WHERE contact_id = '" + id + "';";
+        String sql = "DELETE FROM contact WHERE contact_id = " + id + ";";
         Connection conn = null;
         PreparedStatement pstm = null;
         

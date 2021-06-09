@@ -1,6 +1,5 @@
 package GUI;
 
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import Classes.Allotment;
 import Tools.Allotment.AllotmentTools;
@@ -8,8 +7,8 @@ import java.awt.*;
 
 public class CadastroLotes extends javax.swing.JFrame {
 
-        String icon = "../Assets/icon.png";
-        String plusIcon = "../Assets/plus.png";
+        String icon = "/Assets/icon.png";
+        String plusIcon = "/Assets/plus.png";
 
         public CadastroLotes(boolean isTrue) {
             if (isTrue) {

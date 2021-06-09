@@ -5,24 +5,23 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
-import Classes.Allotment;
-import Classes.Contact;
-import Classes.Store;
-import DAOs.AllotmentDAO;
-import DAOs.ContactDAO;
+import Classes.*;
 import DAOs.StoreDAO;
 import Tools.Allotment.AllotmentTools;
+import Tools.Contact.ContactTools;
 import Tools.Store.StoreTools;
 import java.awt.*;
 public class AltCadastro extends javax.swing.JFrame {
-        String SalvarIcon = "../Assets/salvar.png";
-        String ExcluirIcon = "../Assets/apagar.png";
-        String plusIcon = "../Assets/plus.png";
-        String icon = "../Assets/icon.png";
-        int storeID;
+        String SalvarIcon = "/Assets/salvar.png";
+        String ExcluirIcon = "/Assets/apagar.png";
+        String plusIcon = "/Assets/plus.png";
+        String icon = "/Assets/icon.png";
+        static int storeID;
         static int ID;
         String address;
-    
+        String  where = "fantasy_name";   
+        int cont = 0;
+        
         public AltCadastro(boolean isTrue) {
             if(isTrue){
                 initComponents();
@@ -39,11 +38,11 @@ public class AltCadastro extends javax.swing.JFrame {
             popupMenu1 = new java.awt.PopupMenu();
             popupMenu2 = new java.awt.PopupMenu();
             CheckBox = new javax.swing.JCheckBox();
-            jProgressBar1 = new javax.swing.JProgressBar();
+            new javax.swing.JProgressBar();
             jTextField8 = new javax.swing.JTextField();
-            jSeparator7 = new javax.swing.JSeparator();
-            jSeparator8 = new javax.swing.JSeparator();
-            jSeparator9 = new javax.swing.JSeparator();
+            new javax.swing.JSeparator();
+            new javax.swing.JSeparator();
+            new javax.swing.JSeparator();
             popupMenu3 = new java.awt.PopupMenu();
             ComboBox = new javax.swing.JComboBox<>();
             jLabel8 = new javax.swing.JLabel();
@@ -53,7 +52,7 @@ public class AltCadastro extends javax.swing.JFrame {
             inputPesquisar = new javax.swing.JTextField();
             jScrollPane1 = new javax.swing.JScrollPane();
             jTable2 = new javax.swing.JTable();
-            jSeparator1 = new javax.swing.JSeparator();
+            new javax.swing.JSeparator();
             CheckBoxPlus = new javax.swing.JCheckBox();
             botaoPesquisar = new javax.swing.JButton();
             inputEmail = new javax.swing.JTextField();
@@ -104,34 +103,40 @@ public class AltCadastro extends javax.swing.JFrame {
             inputAluguel.setEditable(false);
             inputArea.setEditable(false);
             inputEndereco.setEditable(false);
-            List<Store> listStore = StoreDAO.getStores();
-            String[] storee = new String[listStore.size()];
-            List<Contact> contacts = ContactDAO.getContacts();
+            List<Store> listStore = StoreTools.getStores();
+            String[] store = new String[listStore.size()];
+            List<Contact> contacts = ContactTools.getContacts();
             CheckBox.setSelected(true);
             CheckBox.setText("CheckBox");
     
             jTextField8.setText("jTextField1");
     
             popupMenu3.setLabel("popupMenu3");
-                
-            setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-    
-            ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome Fantasia", "CNPJ", "Todos"}));
+            int i = 0;
+            for (Store a : StoreTools.getStores()) {
+                store[i] = a.getFantasy_name().toUpperCase();
+                i++;
+            }
+            ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome Fantasia", "CNPJ"}));
             ComboBox.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                         int j = 0;
-                        if(ComboBox.getSelectedItem().toString() == "Nome Fantasia"){
-                                for (Store a : StoreDAO.getStores()) {
-                                        storee[j] = a.getFantasy_name().toUpperCase();
-                                        j++;
-                                    }
+                        if(ComboBox.getSelectedItem().toString() == "CNPJ"){
+                            where= "CNPJ";
+                            for (Store a : StoreTools.getStores()) {
+                                    store[j] = a.getCNPJ().toUpperCase();
+                                    j++;
+                                }
+                               
                         }
                         else{
-                                for (Store a : StoreDAO.getStores()) {
-                                        storee[j] = a.getCNPJ().toUpperCase();
-                                        j++;
-                                    }
+                            where ="fantasy_name";
+                            for (Store a : StoreTools.getStores()) {
+                                store[j] = a.getFantasy_name().toUpperCase();
+                                j++;
+                            }
                         }
+                      
                         
                 }
             });
@@ -146,12 +151,14 @@ public class AltCadastro extends javax.swing.JFrame {
                     int num = JOptionPane.showConfirmDialog(null, "Deseja relamente apagar?");
                     boolean confirm = (num == 0) ? true : false;
                     if (confirm) {
-                        ContactDAO.deleteContact(ID);
-                        StoreDAO.deleteStore(ID);
-                        Allotment allotment = AllotmentDAO.getObject(address);
+                        StoreDAO.deleteStore(storeID);
+                        ContactTools.deleteContact(ID);
+                        System.out.println(storeID);
+                        Allotment allotment = AllotmentTools.getObject(address);
                         allotment.setAvailable(true);
                         allotment.setStore_id("NULL");
-                        AllotmentDAO.updateAllotment(allotment);
+                        AllotmentTools.updateAllotment(allotment);
+                        Consulta.att();
                         dispose();
                     }
     
@@ -168,7 +175,8 @@ public class AltCadastro extends javax.swing.JFrame {
                         Contact contact = new Contact(inputResponsavel.getText(), inputEmail.getText(), inputTelefone.getText());
                         contact.setContact_id(ID);
                         contact.setPhone_2(inputTelefone2.getText());
-                        ContactDAO.updateContact(contact);
+                        ContactTools.updateContact(contact);
+                        Consulta.att();
                         dispose();
     
                     }
@@ -176,39 +184,19 @@ public class AltCadastro extends javax.swing.JFrame {
                 }
             });
             
-    
-            jTable2.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
-                    {null, null, null, null},
-                    {null, null, null, null},
-                    {null, null, null, null},
-                    {null, null, null, null}
-                },
-                new String [] {
-                    "Title 1", "Title 2", "Title 3", "Title 4"
-                }
-            ) {
-                boolean[] canEdit = new boolean [] {
-                    false, false, false, false
-                };
-    
-                public boolean isCellEditable(int rowIndex, int columnIndex) {
-                    return canEdit [columnIndex];
-                }
-            });
            
             jScrollPane1.setViewportView(jTable2);
             CheckBoxPlus.setText("Visualizar todos");
-           
-    
+           jScrollPane1.setVisible(false);
+
             botaoPesquisar.setText("Pesquisar");
             botaoPesquisar.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     if (listStore.size() > 0) {
-                        for (int i = 0; i < storee.length; i++) {
-                            if (inputPesquisar.getText().equals(storee[i].toUpperCase())) {
-
-                                storeID = (int) StoreTools.getWithName("id", ComboBox.getSelectedItem().toString(), inputPesquisar.getText()).get(0);
+                        for (int i = 0; i < store.length; i++) {
+                            if (inputPesquisar.getText().toUpperCase().equals(store[i].toUpperCase())) {
+                                System.out.println(ComboBox.getSelectedItem());
+                                storeID = (int) StoreTools.getWithName("id", where, inputPesquisar.getText()).get(0);
                                 Store store = (Store) StoreDAO.getObject(storeID);
                                 ID = store.getContact_id();
                                 inputNomeFantasia.setText(store.getFantasy_name());
@@ -218,7 +206,7 @@ public class AltCadastro extends javax.swing.JFrame {
                                 ComboBoxServicos.setSelectedItem(store.getActivity());
                                 ComboBoxModelo.setSelectedItem(store.getModel());
                                 inputVP.setText(store.getSalesOrServiceProvision());
-                                Contact contact = ContactDAO.getObject(ID);
+                                Contact contact = ContactTools.getObject(ID);
                                 inputResponsavel.setText(contact.getResponsible());
                                 inputEmail.setText(contact.getEmail());
                                 if (contacts.get(i).getPhone_2() != null) {
@@ -240,11 +228,7 @@ public class AltCadastro extends javax.swing.JFrame {
                 }
             });
 
-            inputTelefone2.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    inputTelefone2ActionPerformed(evt);
-                }
-            });
+           
 
 
     
@@ -394,8 +378,6 @@ public class AltCadastro extends javax.swing.JFrame {
                                 .addComponent(jSeparator10))))
                     .addContainerGap())
                 .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(botaoAdcLote)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(botaoSalvar)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -501,28 +483,12 @@ public class AltCadastro extends javax.swing.JFrame {
                     .addGap(24, 24, 24)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(botaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(botaoAdcLote, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(botaoApagar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
             );
     
             pack();
-        }// </editor-fold>                        
-    
-        private void botaoApagarActionPerformed(java.awt.event.ActionEvent evt) {                                            
-            // TODO add your handling code here:
-        }                                           
-    
-        private void inputPesquisarActionPerformed(java.awt.event.ActionEvent evt) {                                               
-            // TODO add your handling code here:
-        }                                              
-    
-        private void ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {                                         
-            // TODO add your handling code here:
-        }                                        
-    
-        private void inputTelefone2ActionPerformed(java.awt.event.ActionEvent evt) {                                               
-            // TODO add your handling code here:
-        }                                              
+            setLocationRelativeTo(null);
+        }                                 
     
 
                       
@@ -565,19 +531,14 @@ public class AltCadastro extends javax.swing.JFrame {
         private javax.swing.JLabel jLabel7;
         private javax.swing.JLabel jLabel8;
         private javax.swing.JLabel jLabel9;
-        private javax.swing.JProgressBar jProgressBar1;
         private static javax.swing.JScrollPane jScrollPane1;
         private javax.swing.JScrollPane jScrollPane2;
-        private javax.swing.JSeparator jSeparator1;
         private javax.swing.JSeparator jSeparator10;
         private javax.swing.JSeparator jSeparator2;
         private javax.swing.JSeparator jSeparator3;
         private javax.swing.JSeparator jSeparator4;
         private javax.swing.JSeparator jSeparator5;
         private javax.swing.JSeparator jSeparator6;
-        private javax.swing.JSeparator jSeparator7;
-        private javax.swing.JSeparator jSeparator8;
-        private javax.swing.JSeparator jSeparator9;
         private javax.swing.JTable jTable2;
         private javax.swing.JTextField inputRazaoSocial;
         private javax.swing.JTextField inputCNPJ;

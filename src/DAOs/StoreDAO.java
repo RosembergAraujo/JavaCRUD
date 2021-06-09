@@ -2,12 +2,9 @@ package DAOs;
 
 import java.sql.*;
 import java.util.*;
-import Tools.Contact.*;
-import Tools.Store.*;
 
 import Classes.*;
 import ConnectionFactory.ConnectionFactory;
-import GUI.TelaLogin;
 
 public class StoreDAO {
 
@@ -252,14 +249,15 @@ public class StoreDAO {
         return lastStoreId;
     }
     public static void deleteStore(int id) {
-        String sql = "DELETE FROM store WHERE contact_id = '" + id + "';";
+        System.out.println(id);
+        String sql = "DELETE FROM store WHERE contact_id = " + id + "";
         Connection conn = null;
         PreparedStatement pstm = null;
 
         try {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
-            pstm.execute();
+            pstm.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

@@ -5,7 +5,7 @@ import DAOs.LoginDAO;
 import java.awt.*;
 
 public class TelaLogin extends javax.swing.JFrame {
-    String icon = "../Assets/icon.png";
+    String icon = "/Assets/icon.png";
 
     public TelaLogin() {
         initComponents();

@@ -13,8 +13,8 @@ import java.awt.*;
 import Tools.Store.StoreTools;
 
 public class Cadastro extends javax.swing.JFrame {
-        String icon = "../Assets/icon.png";
-        String plusIcon = "../Assets/plus.png";
+        String icon = "/Assets/icon.png";
+        String plusIcon = "/Assets/plus.png";
         List<Object> addressList = AllotmentTools.getWithName("address", "available", "true");
         String[] address = new String[addressList.size()];
     

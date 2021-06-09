@@ -1,19 +1,13 @@
 package GUI;
 
-import java.util.List;
-
-import Classes.Allotment;
-import Classes.Contact;
-import Classes.Store;
-import DAOs.AllotmentDAO;
-import DAOs.ContactDAO;
-import DAOs.StoreDAO;
+import Classes.*;
+import DAOs.*;
 import Tools.Store.StoreTools;
 import java.awt.*;
 
 public class Visualizar extends javax.swing.JFrame {
     int id;
-    String icon = "../Assets/icon.png";
+    String icon = "/Assets/icon.png";
     public Visualizar(int id, boolean isTrue) {
         this.id = id;
 

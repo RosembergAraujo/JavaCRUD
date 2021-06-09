@@ -1,4 +1,4 @@
-package GUI;
+package Classes;
 
 
 public class Pesquisar {
@@ -20,10 +20,6 @@ public class Pesquisar {
     public static int getLeng(){
         return leng;
     }
-
-
-
-  
 
 }
 

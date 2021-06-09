@@ -1,20 +1,18 @@
 package GUI;
 
-import Classes.Allotment;
-import Classes.Contact;
-import Classes.Store;
+import Classes.*;
 import Tools.Store.StoreTools;
 import java.awt.*;
 import java.util.List;
 public class Consulta extends javax.swing.JFrame {
-    String allotmentIcon = "../Assets/allotment_icon.png";
-    String atualizeIcon = "../Assets/atualize.png";
-    String plusIcon = "../Assets/plus.png";
-    String refreshIcon = "../Assets/refresh_icon.png";
-    String searchIcon = "../Assets/search.png";
-    String prossIcon = "../Assets/LOGO.png";
-    String icon = "../Assets/icon.png";
-    String detalhesIcon ="../Assets/detalhes.png";
+    String allotmentIcon = "/Assets/allotment_icon.png";
+    String atualizeIcon = "/Assets/atualize.png";
+    String plusIcon = "/Assets/plus.png";
+    String refreshIcon = "/Assets/refresh_icon.png";
+    String searchIcon = "/Assets/search.png";
+    String prossIcon = "/Assets/LOGO.png";
+    String icon = "/Assets/icon.png";
+    String detalhesIcon ="/Assets/detalhes.png";
     String value;
     public Consulta(boolean isTrue) {
         if (isTrue) {
@@ -73,7 +71,7 @@ public class Consulta extends javax.swing.JFrame {
     } 
     private void initComponents() {
 
-        jRadioButton1 = new javax.swing.JRadioButton();
+        new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         inputPesquisarText = new javax.swing.JTextField();
@@ -88,7 +86,7 @@ public class Consulta extends javax.swing.JFrame {
         botaoDetalhes = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        botaoSuporte = new javax.swing.JMenu();
+        botaoSuporte = new javax.swing.JMenuItem();
         att();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PROSS - Consulta");
@@ -159,7 +157,7 @@ public class Consulta extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int row  = jTable1.getSelectedRow();
                 botaoDetalhes.setEnabled(true);
-                
+                System.out.println(row);
                 
                 value = String.valueOf(jTable1.getModel().getValueAt(row, 0));
                 
@@ -180,9 +178,18 @@ public class Consulta extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         botaoSuporte.setText("Suporte");
+        
         jMenuBar1.add(botaoSuporte);
 
         setJMenuBar(jMenuBar1);
+
+        botaoSuporte.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Suport suport = new Suport();
+                suport.setVisible(true);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -268,12 +275,11 @@ public class Consulta extends javax.swing.JFrame {
     private javax.swing.JButton botaoCadastro;
     private javax.swing.JButton botaoCadastroDeLote;
     private javax.swing.JButton botaoPesquisar;
-    private javax.swing.JMenu botaoSuporte;
+    private javax.swing.JMenuItem botaoSuporte;
     private javax.swing.JTextField inputPesquisarText;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JRadioButton jRadioButton1;
     private static javax.swing.JScrollPane jScrollPane1;
     private static javax.swing.JTable jTable1;
     private javax.swing.JLabel logo;                  
