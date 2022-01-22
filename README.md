@@ -1,7 +1,6 @@
 # JavaDB - CRUD
 
-Java project made with VS Code.
-This is a Java college project that can create a store inside of MySQL database, read this stores, catch by name of columm, decrypt a columm with a HASH using AES_DECRYPT, alterate and delete too.
+This is a java project made in college that can create a store inside of MySQL database, read this stores, catch by name of columm, decrypt a columm with a HASH using AES_DECRYPT, alterate and delete.
 
 ## Exemple
 
